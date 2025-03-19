@@ -271,6 +271,12 @@ datos_rlogistica <- data %>%
 datos_rlogistica[, c("genero", "nivel_educativo","preferencia_politica")] <- lapply(datos_rlogistica[, c("genero", "nivel_educativo","preferencia_politica")], as.factor)
 ```
 
+D = modelo_logistico\$null.deviance - modelo_logistico\$deviance
+
+p_valor = 1-pchisq(D, 1)
+
+p_valor
+
 ```{r}
 
 datos_rlogistica <- datos_rlogistica %>%
@@ -283,7 +289,7 @@ modelo_logistico <- glm(preferencia_binaria ~ edad + genero + nivel_educativo + 
 
 summary(modelo_logistico)
 #test deviance
-D = modelo logístico$null.deviance - modelo_logistico$deviance 
+D = modelo_logistico$null.deviance - modelo_logistico$deviance 
 p_valor = 1-pchisq(D, 1)
 p_valor
 ```
