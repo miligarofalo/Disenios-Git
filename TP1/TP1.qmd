@@ -66,13 +66,15 @@ data <- data %>%
 ```{r}
 summary(data)
 #edad min 5  // max 150
-# Edades raras  -> los de 5 van a la secundaria y universidad y uno tiene hijos ??!!! gente con 150 años --> La persona más longeva del mundo fue Jeanne Louise Calment, una francesa que vivió 122 años y 164 días. 
+
+#Edades raras  -> hay personas con edad = 5 y van a la secundaria/ universidad (incluso uno tiene hijos)
+#hay una persona con 150 años --> La persona más longeva del mundo fue Jeanne Louise Calment, una francesa que vivió 122 años y 164 días. 
 
 # ingreso min -5000 // max 1000000 
-# ingresos negativos
+# hay ingresos negativos que podrían ser interpretados como una deuda
 
 # número de hijos min -1 // max 10
-# número de hijos negativo
+# hay algunas filas con número de hijos negativo
 
 #sapply(data, function(x) if (is.numeric(x)) c(Min = min(x, na.rm = TRUE), Max = max(x, na.rm = TRUE))) devuelve max y min de las variables numericas
 ```
@@ -83,6 +85,7 @@ summary(data)
 
 data$numero_de_hijos <- abs(data$numero_de_hijos)
 data$ingreso_anual<- abs(data$ingreso_anual)
+
 #se sacan los negativos considerando el valor absoluto asumiendo error de tipeo
 # para evaluar por edades vamos a tener cuidado con los datos raros
 # los consideraremos solo para generos o niveles educativos alcanzados
@@ -104,6 +107,7 @@ summary(data$estado_corregido) # categorias creadas: 6. Son correctas son los es
 
 # Los factores encontrados fueron: 
 # California    Florida   Illinois Nueva York      Texas       NA's 
+
 # corregimos antes los datos no quedaron errores e typos como NY o diferentes mayúsculas o minúsculas.
 ```
 
@@ -125,6 +129,8 @@ maga_data <- data %>%
 
 maga_data <- maga_data %>%
   mutate(educacion_universitaria = if_else(nivel_educativo %in% c("Universitario", "Posgrado", "Doctorado"), "Sí", "No"))
+
+summary(maga_data)
 ```
 
 #### Parte 2. Graficos
@@ -214,7 +220,11 @@ plot(modelo_regresion)
 
 **Ejercicio 2.** Como interpretaria el modelo? escriba un breve parrafo interpretando los coeficientes:
 
-Respuesta:
+*Del modelo podemos obtener, en primer lugar, que los datos no se ajustan bien al modelo ya que el R\^2 es menor a 0.1, es decir que este no sirve para predecir el ingreso anual. Además, el p-value asociado al estadístico de Fisher es mayor a 0.05, por lo tanto a nivel global no podemos encontrar significancia.*
+
+*La única variable regresora que pareciera ser significativa es el número de hijos, que está relacionada inversamente con el ingreso anual. Por cada hijo adicional el ingreso se vería disminuido en \$13400, en otras palabras, mientras menos hijos tiene una familia, reciben más ingreso.*
+
+*Por otro lado, el intercept (ingreso anual si el resto de las variables son 0) indica un gran nivel de significancia. Esto en un contexto real puede no tener sentido, sobre todo teniendo en cuenta que una de las variables X utilizadas es la edad.*
 
 **Ejercicio 3**. Esta regresion cumple con los supuestos que debería. Chequee la distribucion normal de los residuos y haga un qqplot de los mismos.
 
@@ -245,9 +255,18 @@ modelo_logistico <- glm(preferencia_binaria ~ edad + genero + nivel_educativo + 
                         family = binomial)
 
 summary(modelo_logistico)
+
+#test deviance para calcular pvalue
+D = modelo_logistico$null.deviance - modelo_logistico$deviance 
+p_valor = 1-pchisq(D, 1)
+p_valor
 ```
 
 **Ejercicio 1:** Interprete el modelo. Que significan los coeficientes obtenidos?
+
+*A partir del los resultados de summary, se puede inferir que el modelo no tiene significancia estadística. Esto es, que las variables regresoras tenidas en cuenta no sirven para predecir si una persona votará a MAGA o no, dado que los p-values son altos. Sin embargo, en el test deviance que nos indica la significancia a nivel global, se obtuvo un p-value\<0.05, lo que indicaría que el modelo puede ser explicado por las variables predictoras.*
+
+*Esto tiene dos explicaciones posibles: una de ellas es que la educación universitaria si tiene un peso en la predicción, ya que a nivel individual fue la única variable predictora significativa. La otra explicación es que hay cierta multicolinealidad entre variables (por ejemplo edad e ingreso o educación universitaria e ingreso), por lo tanto el modelo tiene dificultades para distinguir los efectos individuales de cada una de ellas.*
 
 **Ejercicio 2:** convierta los coeficientes en OR, como los interpreta?
 
