@@ -299,7 +299,7 @@ p_valor
 
 *Respuesta: a partir del los resultados de summary, se puede inferir que el modelo no tiene significancia estadística. Esto es, que las variables regresoras tenidas en cuenta no sirven para predecir si una persona votará a MAGA o no, dado que los p-values son altos. Sin embargo, en el test deviance que nos indica la significancia a nivel global, se obtuvo un p-value\<0.05, lo que indicaría que el modelo puede ser explicado por las variables predictoras.*
 
-*Esto tiene dos explicaciones posibles: una de ellas es que la educación universitaria si tiene un peso en la predicción (como es negativo, se podría decir que quienes alcanzaron solo educación primaria/secundaria están más predispuestos a votar a Trump), ya que a nivel individual fue la única variable predictora significativa. La otra explicación es que hay cierta multicolinealidad entre variables (por ejemplo edad e ingreso o educación universitaria e ingreso), por lo tanto el modelo tiene dificultades para distinguir los efectos individuales de cada una de ellas.*
+*Esto tiene dos explicaciones posibles: una de ellas es que la educación si tiene un peso en la predicción (se podría decir que quienes alcanzaron solo educación primaria/secundaria están más predispuestos a votar a Trump), ya que a nivel individual fue la única variable predictora significativa. La otra explicación es que hay cierta multicolinealidad entre variables (por ejemplo edad e ingreso o educación universitaria e ingreso), por lo tanto el modelo tiene dificultades para distinguir los efectos individuales de cada una de ellas.*
 
 **Ejercicio 2:** convierta los coeficientes en OR, como los interpreta?
 
