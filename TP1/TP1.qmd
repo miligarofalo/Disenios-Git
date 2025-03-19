@@ -178,17 +178,43 @@ ggplot(data_ejercicio2, aes(x = ingreso_anual, y = edad, color = genero)) +
 
 ```{r}
 
-cor(data_ejercicio2$edad[data_ejercicio2$genero == "Masculino"], 
-    data_ejercicio2$ingreso_anual[data_ejercicio2$genero == "Masculino"])
+cor_masc <- cor(data_ejercicio2$edad[data_ejercicio2$genero == "Masculino"], 
+               data_ejercicio2$ingreso_anual[data_ejercicio2$genero =="Masculino"])
 
-cor(data_ejercicio2$edad[data_ejercicio2$genero == "Femenino"], 
-    data_ejercicio2$ingreso_anual[data_ejercicio2$genero == "Femenino"])
+cor_fem <- cor(data_ejercicio2$edad[data_ejercicio2$genero == "Femenino"], 
+              data_ejercicio2$ingreso_anual[data_ejercicio2$genero == "Femenino"])
 
-cor(data_ejercicio2$edad[data_ejercicio2$genero == "Otro"], 
-    data_ejercicio2$ingreso_anual[data_ejercicio2$genero == "Otro"])
+cor_otro <- cor(data_ejercicio2$edad[data_ejercicio2$genero == "Otro"], 
+               data_ejercicio2$ingreso_anual[data_ejercicio2$genero == "Otro"])
 
 
+colores_genero <- c("Femenino" = "#FFC0CB", 
+                    "Masculino" = "#77DD77", 
+                    "Otro" = "#ADD8E6") 
 
+ggplot(data_ejercicio2, aes(x = ingreso_anual, y = edad, color = genero)) +
+  geom_point(alpha = 0.6) +
+  geom_smooth(method = "lm", se = FALSE) +
+  
+  annotate("text", x = max(data_ejercicio2$ingreso_anual, na.rm = TRUE) * 0.9, 
+           y = max(data_ejercicio2$edad, na.rm = TRUE) * 0.95, 
+           label = paste("Corr. Femenino:", round(cor_fem, 2)), color = colores_genero["Femenino"]) +
+  
+  annotate("text", x = max(data_ejercicio2$ingreso_anual, na.rm = TRUE) * 0.9, 
+           y = max(data_ejercicio2$edad, na.rm = TRUE) * 0.90, 
+           label = paste("Corr. Masculino:", round(cor_masc, 2)), color = colores_genero["Masculino"]) +
+  
+  annotate("text", x = max(data_ejercicio2$ingreso_anual, na.rm = TRUE) * 0.9, 
+           y = max(data_ejercicio2$edad, na.rm = TRUE) * 0.85, 
+           label = paste("Corr. Otro:", round(cor_otro, 2)), color = colores_genero["Otro"]) +
+  
+  scale_color_manual(values = colores_genero) +
+  
+  labs(title = "Relación entre Ingreso Anual y Edad por Género",
+       x = "Ingreso Anual",
+       y = "Edad") +
+  
+  theme_minimal()
 ```
 
 #### Parte 2. Regresion para entender a los MAGAs
@@ -202,7 +228,7 @@ maga_data$genero <- as.factor(maga_data$genero)
 maga_data$educacion_universitaria <- as.factor(maga_data$educacion_universitaria)
 
 # Correr la regresión lineal
-modelo_regresion <- lm(ingreso_anual ~ edad + genero + educacion_universitaria + numero_de_hijos, data = maga_data)
+modelo_regresion <- lm(ingreso_anual ~ genero + edad + educacion_universitaria + numero_de_hijos, data = maga_data)
 
 # Ver el resumen del modelo
 summary(modelo_regresion)
@@ -210,17 +236,27 @@ summary(modelo_regresion)
 
 # Ejercicio 3:
 plot(modelo_regresion)
+#Q-Q Residuals: sigue distribucion normal --> cumple supuesto de normalidad de errores(sacando outliers). Los puntos siguen aproximadamente la línea diagonal
+# Residuals vs Fitted: cumple supuesto de linealidad. No hay patrones sistematicos (ejemplo: U)
+# Scale-Location: homocedasticidad (nube de puntos), distribuidos más o menos de manera uniforme (aunque hay una tendencia a bajar cuando los valores de x aumentan)  
+
+library(performance)
+
+# Comprobar los supuestos del modelo con check_model
+check_model(modelo_regresion) #cumple los supuestos
+
+
 ```
 
 **Ejercicio 2.** Como interpretaria el modelo? escriba un breve parrafo interpretando los coeficientes:
 
-Respuesta:
+Respuesta: El número de hijos parece tener un impacto negativo significativo en el ingreso anual. Las variables de género, edad y educación universitaria no presentan efectos significativos en este conjunto de datos, ya que sus valores p son altos. Por cada hijo adicional, el ingreso anual disminuye en promedio en \$13,400.18
 
 **Ejercicio 3**. Esta regresion cumple con los supuestos que debería. Chequee la distribucion normal de los residuos y haga un qqplot de los mismos.
 
 Puede chequear otros supuestos. Pruebe la funcion check_model del paquete performance
 
-Respuesta:
+Respuesta: Cumple con los supuestos.
 
 #### Parte 3. Regresion logistica, prediciendo al votante de Trump
 
@@ -232,6 +268,9 @@ datos_rlogistica <- data %>%
          edad != 5,     # Excluir personas con edad = 5
          edad != 150,   # Excluir personas con edad = 150
         complete.cases(edad, ingreso_anual, genero, preferencia_politica, nivel_educativo))  #Excluir NA en género en todo  
+
+
+datos_rlogistica[, c("genero", "nivel_educativo","preferencia_politica")] <- lapply(datos_rlogistica[, c("genero", "nivel_educativo","preferencia_politica")], as.factor)
 ```
 
 ```{r}
@@ -247,9 +286,9 @@ modelo_logistico <- glm(preferencia_binaria ~ edad + genero + nivel_educativo + 
 summary(modelo_logistico)
 ```
 
-**Ejercicio 1:** Interprete el modelo. Que significan los coeficientes obtenidos?
+**Ejercicio 1:** Interprete el modelo. Que significan los coeficientes obtenidos? Solo la educación primaria tiene un efecto significativo de votar a Trump. Intercepto: logaritmo de la probabilidad de que una persona vote por Trump cuando ingreso es 0, el género es "Femenino" y el nivel educativo es Doctorado
 
-**Ejercicio 2:** convierta los coeficientes en OR, como los interpreta?
+**Ejercicio 2:** convierta los coeficientes en OR, como los interpreta? Las personas con educación primaria tienen 2.72 veces más probabilidades de votar por Trump en comparación con la categoría de referencia (Doctorado).
 
 ```{r}
 odds_ratios <- exp(coef(modelo_logistico))
