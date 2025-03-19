@@ -250,13 +250,11 @@ check_model(modelo_regresion) #cumple los supuestos
 
 **Ejercicio 2.** Como interpretaria el modelo? escriba un breve parrafo interpretando los coeficientes:
 
-Respuesta: El número de hijos parece tener un impacto negativo significativo en el ingreso anual. Las variables de género, edad y educación universitaria no presentan efectos significativos en este conjunto de datos, ya que sus valores p son altos. Por cada hijo adicional, el ingreso anual disminuye en promedio en \$13,400.18. El intercept (ingreso anual si el resto de las variables son 0) indica un gran nivel de significancia. Esto en un contexto real puede no tener sentido, sobre todo teniendo en cuenta que una de las variables X utilizadas es la edad.
+*Respuesta:* *Del modelo podemos obtener, en primer lugar, que los datos no se ajustan bien al modelo ya que el R\^2 es menor a 0.1, es decir que este no sirve para predecir el ingreso anual. Además, el p-value asociado al estadístico de Fisher es mayor a 0.05, por lo tanto a nivel global no podemos encontrar significancia. La única variable regresora que pareciera ser significativa es el número de hijos, que está relacionada inversamente con el ingreso anual. Por cada hijo adicional el ingreso se vería disminuido en \$13.400,18, en otras palabras, mientras menos hijos tiene una familia, reciben más ingreso. Por otro lado, el intercept (ingreso anual si el resto de las variables son 0) indica un gran nivel de significancia. Esto en un contexto real puede no tener sentido, sobre todo teniendo en cuenta que una de las variables X utilizadas es la edad.*
 
-**Ejercicio 3**. Esta regresion cumple con los supuestos que debería. Chequee la distribucion normal de los residuos y haga un qqplot de los mismos.
+**Ejercicio 3**. Esta regresion cumple con los supuestos que debería. Chequee la distribucion normal de los residuos y haga un qqplot de los mismos. Puede chequear otros supuestos. Pruebe la funcion check_model del paquete performance
 
-Puede chequear otros supuestos. Pruebe la funcion check_model del paquete performance
-
-Respuesta: Cumple con los supuestos.
+*Respuesta: Cumple con los supuestos.*
 
 #### Parte 3. Regresion logistica, prediciendo al votante de Trump
 
@@ -284,11 +282,19 @@ modelo_logistico <- glm(preferencia_binaria ~ edad + genero + nivel_educativo + 
                         family = binomial)
 
 summary(modelo_logistico)
+#test deviance
+D = modelo logístico$null.deviance - modelo_logistico$deviance 
+p_valor = 1-pchisq(D, 1)
+p_valor
 ```
 
-**Ejercicio 1:** Interprete el modelo. Que significan los coeficientes obtenidos? Solo la educación primaria tiene un efecto significativo de votar a Trump. Intercepto: logaritmo de la probabilidad de que una persona vote por Trump cuando ingreso es 0, el género es "Femenino" y el nivel educativo es Doctorado
+**Ejercicio 1:** Interprete el modelo. Que significan los coeficientes obtenidos?
 
-**Ejercicio 2:** convierta los coeficientes en OR, como los interpreta? Las personas con educación primaria tienen 2.72 veces más probabilidades de votar por Trump en comparación con la categoría de referencia (Doctorado). Según los datos, las variables que disminuirían la probabilidad de ocurrencia del evento (votar a Trump) son, sobre todo, que el género sea femenino u otro y que las personas tengan formación universitaria (ya que para ambos casos OR\<1).
+*Respuesta: a partir del los resultados de summary, se puede inferir que el modelo no tiene significancia estadística. Esto es, que las variables regresoras tenidas en cuenta no sirven para predecir si una persona votará a MAGA o no, dado que los p-values son altos. Sin embargo, en el test deviance que nos indica la significancia a nivel global, se obtuvo un p-value\<0.05, lo que indicaría que el modelo puede ser explicado por las variables predictoras.*
+
+*Esto tiene dos explicaciones posibles: una de ellas es que la educación universitaria si tiene un peso en la predicción (como es negativo, se podría decir que quienes alcanzaron solo educación primaria/secundaria están más predispuestos a votar a Trump), ya que a nivel individual fue la única variable predictora significativa. La otra explicación es que hay cierta multicolinealidad entre variables (por ejemplo edad e ingreso o educación universitaria e ingreso), por lo tanto el modelo tiene dificultades para distinguir los efectos individuales de cada una de ellas.*
+
+**Ejercicio 2:** convierta los coeficientes en OR, como los interpreta?
 
 ```{r}
 odds_ratios <- exp(coef(modelo_logistico))
@@ -296,3 +302,7 @@ odds_ratios <- exp(coef(modelo_logistico))
 # Mostrar Odds Ratios
 print(odds_ratios)
 ```
+
+*Respuesta: Debido a que la información que brindan los OR está asociada a la variación de probabilidades de un evento en relación con la VI, se puede mencionar que las variables tienen un efecto diminuto sobre la posibilidad de votar a Trump las próximas elecciones.*
+
+*Según los datos, las personas con educación primaria tienen 2.72 veces más probabilidades de votar por Trump en comparación con la categoría de referencia (Doctorado). Las variables que disminuirían la probabilidad de ocurrencia del evento (votar a Trump) son, sobre todo, que el género sea femenino u otro y que las personas tengan formación universitaria (ya que para ambos casos OR\<1).*
