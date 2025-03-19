@@ -276,3 +276,7 @@ odds_ratios <- exp(coef(modelo_logistico))
 # Mostrar Odds Ratios
 print(odds_ratios)
 ```
+
+*Debido a que la información que brindan los OR está asociada a la variación de probabilidades de un evento en relación con la VI, se puede mencionar que las variables tienen un efecto diminuto sobre la posibilidad de votar a Trump las próximas elecciones.*
+
+*Según los datos, las variables que disminuirían la probabilidad de ocurrencia del evento (votar a Trump) son, sobre todo, que el género sea femenino u otro y que las personas tengan formación universitaria (ya que para ambos casos OR\<1).*
