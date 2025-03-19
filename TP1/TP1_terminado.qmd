@@ -25,8 +25,9 @@ library(tidyverse)
 install.packages("readr")
 library(readr)
 
+library(rstudioapi)
 
-setwd("C:/Users/Mili/Desktop/PROGRAMACION/DISEÑOS EXP/TRABAJOS GRUPALES")
+setwd(dirname(getActiveDocumentContext()$path))
 getwd()
 
 data <- read_csv("dataset_votantes_trump.csv")
