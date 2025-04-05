@@ -14,7 +14,7 @@ library(modelsummary)
 
 ## Lluvias e inundaciones
 
-El DAG que observan a continuacion representa el modelo causal de un investiador que quiere estudiar el efecto de la **tropicalizacion de los ecosistemas** (que su clima se haya vuelto mas lluvioso y cálido durante todo el año) sobre las **inundaciones** en las ciudades de ese ecosistema. Para eso definio estas variables operacionales en donde:
+El DAG que observan a continuacion representa el modelo causal de un investigador que quiere estudiar el efecto de la **tropicalizacion de los ecosistemas** (que su clima se haya vuelto mas lluvioso y cálido durante todo el año) sobre las **inundaciones** en las ciudades de ese ecosistema. Para eso definio estas variables operacionales en donde:
 
 -   **Lluvias**, es la cantidad de mm acumulados que llovió el año de observación
 
