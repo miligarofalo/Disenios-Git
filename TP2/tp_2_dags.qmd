@@ -53,11 +53,40 @@ ggdag(cambio_climatico) + theme_dag()+
 
 ```{r}
 # escriba el codigo aquí
+camino_causalidad <- dagitty('dag {
+  "inundación" [outcome,pos="0.651,-1.047"]
+  "tropicalización" [pos="-1.906,-1.097"]
+  "vegetación" [pos="-1.116,-0.356"]
+  impermeabilidad [pos="-0.195,-0.320"]
+  lluvia [pos="-1.042,-1.500"]
+
+  "tropicalización" -> "vegetación"
+  "tropicalización" -> lluvia
+  "vegetación" -> "inundación"
+  "vegetación" -> impermeabilidad
+  impermeabilidad -> "inundación"
+  lluvia -> "inundación"
+}')
+
+ggdag(camino_causalidad) + theme_dag()+
+  geom_dag_node(color ="blue") + 
+  geom_dag_text(color = "yellow", size=3.5)+
+  geom_dag_edges(size = 1.5)
 ```
 
 *------------------------------------------------------------------------------------------------------*
 
-*Aquí sus respuestas*
+*Caminos de causalidad abiertos:*
+
+*1. tropicalización–\> lluvias –\> inundación*
+
+*2. tropicalización –\> vegetación –\> inundación*
+
+*3. tropicalización –\> vegetación –\> impermeabilidad–\> inundación*
+
+*El tercer camino no tiene tanto sentido, porque indicaría que el clima más lluvioso y cálido genera más vegetación (sí es cierto) pero esta, a su vez, genera más impermeabilidad (porcentaje cubierto de edificaciones) que causan inundaciones.*
+
+*Tendría más sentido afirmar que la relación es inversa y que la vegetación disminuyó a causa de la construcción de edificaciones, pero no se cumpliría con la relación entre el clima lluvioso y la vegetación.*
 
 *-------------------------------------------------------------------------------------------------------*
 
