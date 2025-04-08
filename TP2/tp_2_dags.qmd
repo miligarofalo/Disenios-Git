@@ -28,22 +28,22 @@ El DAG que observan a continuacion representa el modelo causal de un investigado
 
 ```{r, warning=FALSE, message=FALSE}
 cambio_climatico<-dagitty("dag {
-Obra_publica -> inundaciones
+Obra_publica -> Inundaciones
 Actividad -> Tropicalizacion
-Actividad -> imperm
-Actividad -> vegetacion
-Tropicalizacion -> lluvias
-Tropicalizacion -> vegetacion
-imperm -> inundaciones
-lluvias -> inundaciones
-lluvias -> vegetacion
-vegetacion -> imperm
-vegetacion -> inundaciones
+Actividad -> Imperm
+Actividad -> Vegetacion
+Tropicalizacion -> Lluvias
+Tropicalizacion -> Vegetacion
+Imperm -> Inundaciones
+Lluvias -> Inundaciones
+Lluvias -> Vegetacion
+Vegetacion -> Imperm
+Vegetacion -> Inundaciones
 }")
 
 ggdag(cambio_climatico) + theme_dag()+
-  geom_dag_node(color ="pink") + 
-  geom_dag_text(color = "darkgreen", size=3.5)+
+  geom_dag_node(color ="blue") + 
+  geom_dag_text(color = "yellow", size=3.5)+
   geom_dag_edges(size = 1.5)
 ```
 
@@ -53,40 +53,17 @@ ggdag(cambio_climatico) + theme_dag()+
 
 ```{r}
 # escriba el codigo aquí
-camino_causalidad <- dagitty('dag {
-  "inundación" [outcome,pos="0.651,-1.047"]
-  "tropicalización" [pos="-1.906,-1.097"]
-  "vegetación" [pos="-1.116,-0.356"]
-  impermeabilidad [pos="-0.195,-0.320"]
-  lluvia [pos="-1.042,-1.500"]
+ggdag_adjustment_set(exposure = "Tropicalizacion", outcome = "Inundaciones",cambio_climatico, node_size = 14) +
+  theme(legend.position = "bottom")
 
-  "tropicalización" -> "vegetación"
-  "tropicalización" -> lluvia
-  "vegetación" -> "inundación"
-  "vegetación" -> impermeabilidad
-  impermeabilidad -> "inundación"
-  lluvia -> "inundación"
-}')
+ggdag_paths(from = "Tropicalizacion", to= "Inundaciones", cambio_climatico)
 
-ggdag(camino_causalidad) + theme_dag()+
-  geom_dag_node(color ="blue") + 
-  geom_dag_text(color = "yellow", size=3.5)+
-  geom_dag_edges(size = 1.5)
+cambio_climatico %>% ggdag_paths_fan (from = "Tropicalizacion", to= "Inundaciones", shadow = TRUE, node_size = 18, text_size = 4, spread = 1.5, label_size = text_size, node= TRUE, text_col = "white")
 ```
 
 *------------------------------------------------------------------------------------------------------*
 
-*Caminos de causalidad abiertos:*
-
-*1. tropicalización–\> lluvias –\> inundación*
-
-*2. tropicalización –\> vegetación –\> inundación*
-
-*3. tropicalización –\> vegetación –\> impermeabilidad–\> inundación*
-
-*El tercer camino no tiene tanto sentido, porque indicaría que el clima más lluvioso y cálido genera más vegetación (sí es cierto) pero esta, a su vez, genera más impermeabilidad (porcentaje cubierto de edificaciones) que causan inundaciones.*
-
-*Tendría más sentido afirmar que la relación es inversa y que la vegetación disminuyó a causa de la construcción de edificaciones, pero no se cumpliría con la relación entre el clima lluvioso y la vegetación.*
+El DAG contiene 8 caminos que son los siguientes: el primer camino va desde Tropicalización hacia lluvias. Luego, el segundo va desde Tropicalización, a Lluvias, hacia Vegetación, luego a Imperm y finalmente a Inundaciones. El tercer camino va desde Tropicalización, a Lluvias, hacia Vegetación y finalmente hacia Inundaciones. El cuarto camino va desde Tropicalización hacia Vegetación y luego hacia Inundaciones. El quinto va desde Tropicalización, hacia Vegetación, hacia Imperm y finalmente hacia Inundaciones. El sexto camino sale desde actividad hacia Tropicalización y desde actividad hacia Imperm y luego inundaciones. El septimo camino va desde Actividad hacia tropicalización y luego hacia lluvias, luego sale desde actividad hacia vegetación y luego inundaciones. Obras públicas no pertenece a ningún camino.
 
 *-------------------------------------------------------------------------------------------------------*
 
@@ -96,7 +73,9 @@ Ayude a este investigador a navegar su modelo causal y sugierale el mejor modelo
 
 *------------------------------------------------------------------------------------------------------*
 
-*Aquí sus respuestas*
+El modelo no debería controlar por lluvias e Imperm porque son colliders. Luego, con actividad si debemos controlar porque es una variable confusora, es decir, el modelo teórico debería incluir:
+
+Inundaciones= β0 ​+ β1 \* Tropicalizacion + β2​ \* Obra_publica + β3 \* Actividad + ϵ
 
 *-------------------------------------------------------------------------------------------------------*
 
