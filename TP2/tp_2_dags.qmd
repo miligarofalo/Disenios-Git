@@ -194,7 +194,7 @@ En la salida anterior podemos ver junto con los modelos tambien las métricas de
 
 *------------------------------------------------------------------------------------------------------*
 
-*Aquí sus respuestas*
+El mejor modelo es el modelo 2, que incluye la variable de actividad física, que según el DAG tiene una relación directa con la obesidad. Además, mejora el ajuste del modelo 1. Aunque el Modelo 3 también incluye una variable relevante como la autoestima, esta es influenciada por la obesidad misma, por lo que podría ser una consecuencia más que una causa.
 
 *-------------------------------------------------------------------------------------------------------*
 
@@ -204,10 +204,13 @@ Hay variables que el investigador no ha incluído en el modelo, ¿ud que piensa?
 
 ```{r}
 # corra su modelo aqui
+Modelo_nuevo <- glm(obesidad ~ tiempo_pantalla + actividad_fisica + nivel_socioeconomico + educacion, 
+                    data = obesidad_pantallas, family = binomial)
+summary(Modelo_nuevo)
 ```
 
 *------------------------------------------------------------------------------------------------------*
 
-Justifique aquí su selección del modelo e interprete los resultados
+Podríamos mejorar el análisis incorporando al nivel socioeconómico y a la educación, ya que según el DAG influyen en el tiempo frente a pantallas, la actividad física y la obesidad. Este modelo es más completo porque incluye las variables que influyen directa e indirectamente en la obesidad según el DAG. Al controlar por educación y nivel socioeconómico, podemos ver con mayor claridad el efecto real del tiempo frente a pantallas, sin que esté confundido por otras variables.
 
 *-------------------------------------------------------------------------------------------------------*
