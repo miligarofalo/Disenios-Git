@@ -63,7 +63,7 @@ cambio_climatico %>% ggdag_paths_fan (from = "Tropicalizacion", to= "Inundacione
 
 *------------------------------------------------------------------------------------------------------*
 
-El DAG contiene 8 caminos que son los siguientes: el primer camino va desde Tropicalización hacia lluvias. Luego, el segundo va desde Tropicalización, a Lluvias, hacia Vegetación, luego a Imperm y finalmente a Inundaciones. El tercer camino va desde Tropicalización, a Lluvias, hacia Vegetación y finalmente hacia Inundaciones. El cuarto camino va desde Tropicalización hacia Vegetación y luego hacia Inundaciones. El quinto va desde Tropicalización, hacia Vegetación, hacia Imperm y finalmente hacia Inundaciones. El sexto camino sale desde actividad hacia Tropicalización y desde actividad hacia Imperm y luego inundaciones. El septimo camino va desde Actividad hacia tropicalización y luego hacia lluvias, luego sale desde actividad hacia vegetación y luego inundaciones. Obras públicas no pertenece a ningún camino.
+*El DAG contiene 8 caminos que son los siguientes: el primer camino va desde Tropicalización hacia lluvias. Luego, el segundo va desde Tropicalización, a Lluvias, hacia Vegetación, luego a Imperm y finalmente a Inundaciones. El tercer camino va desde Tropicalización, a Lluvias, hacia Vegetación y finalmente hacia Inundaciones. El cuarto camino va desde Tropicalización hacia Vegetación y luego hacia Inundaciones. El quinto va desde Tropicalización, hacia Vegetación, hacia Imperm y finalmente hacia Inundaciones. El sexto camino sale desde actividad hacia Tropicalización y desde actividad hacia Imperm y luego inundaciones. El septimo camino va desde Actividad hacia tropicalización y luego hacia lluvias, luego sale desde actividad hacia vegetación y luego inundaciones. Obras públicas no pertenece a ningún camino.*
 
 *-------------------------------------------------------------------------------------------------------*
 
@@ -73,9 +73,9 @@ Ayude a este investigador a navegar su modelo causal y sugierale el mejor modelo
 
 *------------------------------------------------------------------------------------------------------*
 
-El modelo no debería controlar por Actividad porque es un collider. Luego, con Lluvias y Vegetación si debemos controlar porque es una variable confusora, es decir, el modelo teórico debería incluir:
+*El modelo no debería controlar por Actividad porque es un collider. Luego, con Lluvias y Vegetación si debemos controlar porque es una variable confusora, es decir, el modelo teórico debería incluir:*
 
-Inundaciones= β0 ​+ β1 \* Tropicalización + β2​ \* Vegetación + β3 \* Lluvias + ϵ
+*Inundaciones= β0 ​+ β1 \* Tropicalización + β2​ \* Vegetación + β3 \* Lluvias + ϵ*
 
 *-------------------------------------------------------------------------------------------------------*
 
@@ -153,11 +153,77 @@ Ahora que tiene los modelos y esta tabla de resultados escriba un texto breve in
 
 *------------------------------------------------------------------------------------------------------*
 
-Con respecto a los intervalos de confianza, en el modelo 1, la línea no cruza el cero lo cual significa que es significativo. Además, el tiempo en pantalla muestra un coeficiente positivo que puede significar que un mayor tiempo en pantalla incrementa la variable de obesidad.
+***Modelo 1 (obesidad explicada por el tiempo en pantalla)***
 
-Por otro lado, en el modelo 2, vemos que el tiempo en pantalla presenta un coeficiente negativo pero, como el intervalo de confianza cruza el cero, la asociación no es significativa. Lo cual nos muestra que cuando agregamos actividad física al modelo, se modifica la significancia de los coeficientes. Además, por el DAG, sabemos que la actividad física es una variable mediadora entre el tiempo en pantalla y la obesidad, por ello, puede que ajustando el modelo con otras variables podamos observar de mejor manera la tendencia de realizar una mayor actividad física.
+*Para este modelo el **intercept** fue de -7.887, por lo tanto, si calculamos el odds, luego del despeje nos queda que la probabilidad de que el modelo prediga que un niño es obeso asumiendo que el resto de las variables son 0, es de 0.000374. Si el tiempo de pantalla es 0, es muy poco probable que el niño sea obeso.*
 
-Finalmente en el modelo 3, al agregar la variable autoestima, que por el DAG sabemos que es collider, se invierten los coeficientes de tiempo en pantalla (es decir, pasan de ser positivos a negativos) y aumenta la incertidumbre ya que su intervalo se vuelve más grande.
+*e\^Bo = ODDS —\> e\^(-7.887) = 0.000375*
+
+*p/(1-p)= e\^Bo*
+
+*por lo tanto, p/(1-p)= ODDS*
+
+*p = (1-p) \* ODDS*
+
+*p= ODDS - p\* ODDS*
+
+*p + p\*ODDS = ODDS*
+
+*p\* (1 + ODDS) = ODDS*
+
+*p= ODDS / 1 + ODDS*
+
+*reemplazando –\> p = 0.000375 / (1 + 0.000375) = 0.000376 aprox.*
+
+*Por otro lado, el **coeficiente** de tiempo_pantalla nos indica que por cada unidad que aumente X, el logaritmo de la razón de probabilidad aumenta en 0.849*
+
+*Por ejemplo, si una persona pasa 1h frente a una pantalla:*
+
+*e\^Bo+B1X = ODDS —\> e\^(-7.887 + 0.849\*1) = 0.00087*
+
+*reemplazando –\> p = 0.00087 / (1 + 0.00087) = 0.000877 aprox.*
+
+*Pero si una persona pasa 20h frente a la pantalla, la probabilidad aumenta exponencialmente:*
+
+*e\^Bo+B1a = ODDS —\> e\^(-7.887 + 0.849\*20) = 8892.8*
+
+*reemplazando –\> p = 8892.8/ (1 + 8892.8) = 0.9998 aprox.*
+
+***Modelo 2 (obesidad explicada por el tiempo en pantalla y la actividad física)***
+
+*Sigue con la misma lógica que el modelo anterior, pero esta vez se agrega una nueva variable.*
+
+*El **intercept** es distinto al del modelo uno ya que en dicho modelo, si bien el tiempo en pantalla podría ser cero, no se contemplaba si la actividad física existía o no. Tiene sentido que el intercept de M2 sea mayor al de M1 porque, independientemente de que tiempo_pantalla sea 0, en actividad física este número implica la existencia de algún tipo de actividad (no es sedentarismo ni una vida demasiado activa, es neutro).*
+
+*e\^Bo = ODDS —\> e\^(-6.102) = 0.00223*
+
+*reemplazando –\> p = 0.00223/ (1 + 0.00223) = 0.0022 aprox.*
+
+*Además, el B1 de tiempo_pantalla indica que por cada unidad que aumente X, el logaritmo de la razón de probabilidad aumenta en 0.569. Por otro lado, la variable actividad_fisica tiene **coeficiente** negativo, lo que representa que aumentar la actividad física reduce en 0.96 el log odds.*
+
+*Por ejemplo, el modelo de una persona muy sedentaria (W= -3) que pase algunas horas en pantalla (X=5) se vería así:*
+
+*X= Tiempo en pantalla*
+
+*W: actividad física*
+
+*e\^Bo+B1X + B2W = ODDS —\> e\^(-6.102+ 0.569\*5-0.964\*(-3) ) = 0.694*
+
+*reemplazando –\> p = 0.694/ (1 + 0.694) = 0.4097 aprox.*
+
+*Si la persona es sedentaria, la probabilidad de ser obeso aumenta considerablemente.*
+
+***Modelo 3 (obesidad explicada por el tiempo en pantalla y autoestima)***
+
+*Al igual que el modelo previo, en el caso de la nueva variable (autoestima) que tome el valor 0 no implica que la persona tenga una imagen negativa de si misma, sino neutral. Si bien el análisis es bastante similar al del modelo 2, lo sorprendente en este caso es que el coeficiente de tiempo en pantalla ahora es negativo.*
+
+***Análisis de IC***
+
+*Con respecto a los* ***intervalos de confianza**, en el modelo 1, la línea no cruza el cero lo cual significa que es significativo. Además, el tiempo en pantalla muestra un coeficiente positivo que puede significar que un mayor tiempo en pantalla incrementa la variable de obesidad.*
+
+*Por otro lado, en el modelo 2, vemos que el tiempo en pantalla presenta un coeficiente negativo pero, como el intervalo de confianza cruza el cero, la asociación no es significativa. Lo cual nos muestra que cuando agregamos actividad física al modelo, se modifica la significancia de los coeficientes. Además, por el DAG, sabemos que la actividad física es una variable mediadora entre el tiempo en pantalla y la obesidad, por ello, puede que ajustando el modelo con otras variables podamos observar de mejor manera la tendencia de realizar una mayor actividad física.*
+
+*Finalmente en el modelo 3, al agregar la variable autoestima, que por el DAG sabemos que es collider, se invierten los coeficientes de tiempo en pantalla (es decir, pasan de ser positivos a negativos) y aumenta la incertidumbre ya que su intervalo se vuelve más grande.*
 
 *-------------------------------------------------------------------------------------------------------*
 
@@ -167,7 +233,7 @@ Ayude al investigador a resolver su pregunta principal, ¿La exposicion a las pa
 
 *------------------------------------------------------------------------------------------------------*
 
-*Aquí sus respuestas*
+*No se puede inferir causalidad a partir de los datos analizados. Si bien en los modelos 1 y 2 se observó una gran asociación entre el tiempo en pantalla y la probabilidad de desarrollar obesidad (con coef. 0.849 y 0.569 respectivamente), esto no implica que exista una relación causal entre ambas variables pero si es información que resulta útil para llevar a cabo predicciones.*
 
 *-------------------------------------------------------------------------------------------------------*
 
@@ -177,7 +243,9 @@ En la salida anterior podemos ver junto con los modelos tambien las métricas de
 
 *------------------------------------------------------------------------------------------------------*
 
-El mejor modelo es el modelo 2, que incluye la variable de actividad física, que según el DAG tiene una relación directa con la obesidad. Además, mejora el ajuste del modelo 1. Aunque el Modelo 3 también incluye una variable relevante como la autoestima, esta es influenciada por la obesidad misma, por lo que podría ser una consecuencia más que una causa.
+*Si nos enfocamos únicamente en las métricas de performance, el mejor modelo sería el 3. Sin embargo, este modelo está sesgado ya que, como se mencionó anteriormente, la variable "autoestima" es un collider que está influenciada por la obesidad, por lo que podría ser una consecuencia más que una causa. Es por esta razón que se descartó dicho modelo como el mejor y se compararon las métricas de los modelos 1 y 2.*
+
+*Luego de un análisis, se obtuvo que el modelo 2 es mejor, ya que incluye la variable de actividad física, que según el DAG tiene una relación directa con la obesidad y sus valores de AIC y log-likelihood son más ajustados.*
 
 *-------------------------------------------------------------------------------------------------------*
 
@@ -194,6 +262,6 @@ summary(Modelo_nuevo)
 
 *------------------------------------------------------------------------------------------------------*
 
-Podríamos mejorar el análisis incorporando al nivel socioeconómico y a la educación, ya que según el DAG influyen en el tiempo frente a pantallas, la actividad física y la obesidad. Este modelo es más completo porque incluye las variables que influyen directa e indirectamente en la obesidad según el DAG. Al controlar por educación y nivel socioeconómico, podemos ver con mayor claridad el efecto real del tiempo frente a pantallas, sin que esté confundido por otras variables.
+*Podríamos mejorar el análisis incorporando al nivel socioeconómico y a la educación, ya que según el DAG influyen en el tiempo frente a pantallas, la actividad física y la obesidad. Este modelo es más completo porque incluye las variables que influyen directa e indirectamente en la obesidad según el DAG. Al controlar por educación y nivel socioeconómico, podemos ver con mayor claridad el efecto real del tiempo frente a pantallas, sin que esté confundido por otras variables.*
 
 *-------------------------------------------------------------------------------------------------------*
