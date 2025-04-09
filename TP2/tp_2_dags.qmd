@@ -147,13 +147,17 @@ modelsummary(models)
 modelplot(models, coef_omit = 'Interc')
 ```
 
-### 1. Interpretacion
+### 1. Interpretación
 
 Ahora que tiene los modelos y esta tabla de resultados escriba un texto breve interpretando cada uno de los modelos y los efectos de las variables incluidas. *Si tiene que hacer algun calculo extra puede hacerlo*
 
 *------------------------------------------------------------------------------------------------------*
 
-*Aquí sus respuestas*
+Con respecto a los intervalos de confianza, en el modelo 1, la línea no cruza el cero lo cual significa que es significativo. Además, el tiempo en pantalla muestra un coeficiente positivo que puede significar que un mayor tiempo en pantalla incrementa la variable de obesidad.
+
+Por otro lado, en el modelo 2, vemos que el tiempo en pantalla presenta un coeficiente negativo pero, como el intervalo de confianza cruza el cero, la asociación no es significativa. Lo cual nos muestra que cuando agregamos actividad física al modelo, se modifica la significancia de los coeficientes. Además, por el DAG, sabemos que la actividad física es una variable mediadora entre el tiempo en pantalla y la obesidad, por ello, puede que ajustando el modelo con otras variables podamos observar de mejor manera la tendencia de realizar una mayor actividad física.
+
+Finalmente en el modelo 3, al agregar la variable autoestima, que por el DAG sabemos que es collider, se invierten los coeficientes de tiempo en pantalla (es decir, pasan de ser positivos a negativos) y aumenta la incertidumbre ya que su intervalo se vuelve más grande.
 
 *-------------------------------------------------------------------------------------------------------*
 
