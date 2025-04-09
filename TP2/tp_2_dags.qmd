@@ -64,7 +64,7 @@ cambio_climatico %>% ggdag_paths_fan (from = "Tropicalizacion", to= "Inundacione
 
 *------------------------------------------------------------------------------------------------------*
 
-*El DAG contiene 8 caminos que son los siguientes: el primer camino va desde Tropicalización hacia lluvias. Luego, el segundo va desde Tropicalización, a Lluvias, hacia Vegetación, luego a Imperm y finalmente a Inundaciones. El tercer camino va desde Tropicalización, a Lluvias, hacia Vegetación y finalmente hacia Inundaciones. El cuarto camino va desde Tropicalización hacia Vegetación y luego hacia Inundaciones. El quinto va desde Tropicalización, hacia Vegetación, hacia Imperm y finalmente hacia Inundaciones. El sexto camino sale desde actividad hacia Tropicalización y desde actividad hacia Imperm y luego inundaciones. El septimo camino va desde Actividad hacia tropicalización y luego hacia lluvias, luego sale desde actividad hacia vegetación y luego inundaciones. Obras públicas no pertenece a ningún camino.*
+*En el DAG resaltamos en colores 8 caminos causales abiertos ya que el paquete {ggdag} y {dagitty} no distingue entre caminos causales y no causales, considerando así todos los caminos posibles entre la exposición y el resultado, sean abiertos o cerrados, causales o espurios (caminos despintados). Mirando el gráfico solo 5 de esos 8 caminos quedan como causales abiertos cuando se ajusta por Actividad (ya que los otros 3 se cierran). El primer camino va desde Tropicalización hacia Lluvias y luego Inundaciones. El segundo va desde Tropicalización, a Lluvias, hacia Vegetación, luego a Imperm y finalmente a Inundaciones. El tercer camino va desde Tropicalización, a Lluvias, hacia Vegetación y finalmente hacia Inundaciones. El cuarto camino va desde Tropicalización hacia Vegetación, Imper y luego hacia Inundaciones. El quinto va desde Tropicalización, hacia Vegetación, y finalmente hacia Inundaciones. Los caminos sexto, séptimo y octavo contienen Actividad la cual actúa como variable confusora. En el caso del sexto camino sale desde Actividad hacia Tropicalización y hacia Imperm que termina en inundaciones. El séptimo va desde Actividad hacia Tropicalización y hacia Vegetación luego Imper llegando a Inundaciones. El octavo comienza en actividad afectando Tropicalización y Vegetación la cual llega a Inundaciones. Obras públicas no pertenece a ningún camino debido a que no abre caminos espurios ni causales entre la exposición y el outcome por lo que no hay que controlarla para estimar el efecto causal entre las variables de interés.*
 
 *-------------------------------------------------------------------------------------------------------*
 
@@ -214,7 +214,7 @@ Ahora que tiene los modelos y esta tabla de resultados escriba un texto breve in
 
 *reemplazando –\> p = 0.694/ (1 + 0.694) = 0.4097 aprox.*
 
-*Si la persona es sedentaria, la probabilidad de ser obeso aumenta considerablemente.*
+*Si la persona es sedentaria, la probabilidad de ser obeso aumenta considerablemente. Por lo que la actividad física puede brindar un efecto Protector.*
 
 ***Modelo 3 (obesidad explicada por el tiempo en pantalla y autoestima)***
 
@@ -236,7 +236,7 @@ Ayude al investigador a resolver su pregunta principal, ¿La exposicion a las pa
 
 *------------------------------------------------------------------------------------------------------*
 
-*No se puede inferir causalidad a partir de los datos analizados. Si bien en los modelos 1 y 2 se observó una gran asociación entre el tiempo en pantalla y la probabilidad de desarrollar obesidad (con coef. 0.849 y 0.569 respectivamente), esto no implica que exista una relación causal entre ambas variables pero si es información que resulta útil para llevar a cabo predicciones.*
+*No se puede inferir causalidad a partir de los datos analizados: dos de los modelos ajustan por variables mediadoras y colliders, y los tres omiten confusoras relevantes. Por eso, la asociación podría deberse a otros factores no modelados y solo puede usarse para hacer predicciones, no para afirmar una relación causa-efecto. Esto ocurre con los modelos 1 y 2 en los que se observó una gran asociación entre el tiempo en pantalla y la probabilidad de desarrollar obesidad (con coef. 0.849 y 0.569 respectivamente) lo que brinda información útil para llevar a cabo predicciones.*
 
 *-------------------------------------------------------------------------------------------------------*
 
