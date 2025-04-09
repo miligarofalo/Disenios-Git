@@ -54,17 +54,26 @@ ggdag(cambio_climatico) + theme_dag()+
 
 ```{r}
 # escriba el codigo aquí
-ggdag_adjustment_set(exposure = "Tropicalizacion", outcome = "Inundaciones",cambio_climatico, node_size = 14) +
-  theme(legend.position = "bottom")
 
+#primero probamos diferentes métodos para visualizar los caminos
 ggdag_paths(from = "Tropicalizacion", to= "Inundaciones", cambio_climatico)
 
 cambio_climatico %>% ggdag_paths_fan (from = "Tropicalizacion", to= "Inundaciones", shadow = TRUE, node_size = 18, text_size = 4, spread = 1.5, label_size = text_size, node= TRUE, text_col = "white")
+
+#Vemos si desde el código podemos visualizar algún ajuste
+ggdag_adjustment_set(exposure = "Tropicalizacion", outcome = "Inundaciones",cambio_climatico, node_size = 14) + theme(legend.position = "bottom")
+
+#ajustamos por Actividad
+cambio_climatico %>% ggdag_paths_fan (from = "Tropicalizacion", to= "Inundaciones", adjust_for = "Actividad", shadow = TRUE, node_size = 18, text_size = 4, spread = 1.5, label_size = text_size, node= TRUE, text_col = "white")
 ```
 
 *------------------------------------------------------------------------------------------------------*
 
-*En el DAG resaltamos en colores 8 caminos causales abiertos ya que el paquete {ggdag} y {dagitty} no distingue entre caminos causales y no causales, considerando así todos los caminos posibles entre la exposición y el resultado, sean abiertos o cerrados, causales o espurios (caminos despintados). Mirando el gráfico solo 5 de esos 8 caminos quedan como causales abiertos cuando se ajusta por Actividad (ya que los otros 3 se cierran). El primer camino va desde Tropicalización hacia Lluvias y luego Inundaciones. El segundo va desde Tropicalización, a Lluvias, hacia Vegetación, luego a Imperm y finalmente a Inundaciones. El tercer camino va desde Tropicalización, a Lluvias, hacia Vegetación y finalmente hacia Inundaciones. El cuarto camino va desde Tropicalización hacia Vegetación, Imper y luego hacia Inundaciones. El quinto va desde Tropicalización, hacia Vegetación, y finalmente hacia Inundaciones. Los caminos sexto, séptimo y octavo contienen Actividad la cual actúa como variable confusora. En el caso del sexto camino sale desde Actividad hacia Tropicalización y hacia Imperm que termina en inundaciones. El séptimo va desde Actividad hacia Tropicalización y hacia Vegetación luego Imper llegando a Inundaciones. El octavo comienza en actividad afectando Tropicalización y Vegetación la cual llega a Inundaciones. Obras públicas no pertenece a ningún camino debido a que no abre caminos espurios ni causales entre la exposición y el outcome por lo que no hay que controlarla para estimar el efecto causal entre las variables de interés.*
+*En el DAG resaltamos en colores 8 caminos causales abiertos ya que el paquete {ggdag} y {dagitty} no distingue entre caminos causales y no causales, considerando así todos los caminos posibles entre la exposición y el resultado, sean abiertos o cerrados, causales o espurios (caminos despintados). Mirando el gráfico solo 5 de esos 8 caminos quedan como causales abiertos cuando se ajusta por Actividad (ya que los otros 3 se cierran). El primer camino va desde Tropicalización hacia Lluvias y luego Inundaciones. El segundo va desde Tropicalización, a Lluvias, hacia Vegetación, luego a Imperm y finalmente a Inundaciones. El tercer camino va desde Tropicalización, a Lluvias, hacia Vegetación y finalmente hacia Inundaciones. El cuarto camino va desde Tropicalización hacia Vegetación, Imper y luego hacia Inundaciones. El quinto va desde Tropicalización, hacia Vegetación, y finalmente hacia Inundaciones.*
+
+*Los caminos sexto, séptimo y octavo (que aparecen en el primer gráfico de caminos) contienen Actividad la cual actúa como variable confusora. En el caso del sexto camino sale desde Actividad hacia Tropicalización y hacia Imperm que termina en inundaciones. El séptimo va desde Actividad hacia Tropicalización y hacia Vegetación luego Imper llegando a Inundaciones. El octavo comienza en actividad afectando Tropicalización y Vegetación la cual llega a Inundaciones.*
+
+*Obras públicas no pertenece a ningún camino debido a que no abre caminos espurios ni causales entre la exposición y el outcome por lo que no hay que controlarla para estimar el efecto causal entre las variables de interés.*
 
 *-------------------------------------------------------------------------------------------------------*
 
