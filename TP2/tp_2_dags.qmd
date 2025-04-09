@@ -74,9 +74,25 @@ Ayude a este investigador a navegar su modelo causal y sugierale el mejor modelo
 
 *------------------------------------------------------------------------------------------------------*
 
-*El modelo no debería controlar por Actividad porque es un collider. Luego, con Lluvias y Vegetación si debemos controlar porque es una variable confusora, es decir, el modelo teórico debería incluir:*
+#Chicas agrego acá lo que sabemos para ver el tema del modelo:
 
-*Inundaciones= β0 ​+ β1 \* Tropicalización + β2​ \* Vegetación + β3 \* Lluvias + ϵ*
+Actividad es confusora
+
+Vegetación y lluvias son mediadoras
+
+Imperm la podemos obviar???
+
+COMENTARIO MILI -\> Para que el modelo sea bueno es necesario identificar y bloquear los caminos de confusión, sin bloquear los caminos causales (mediadores). Actividad debe ser incluida como covariable porque es una confusora: afecta tanto a la exposición (Tropicalización) como a otras variables que a su vez afectan a Inundaciones (como Imperm y Vegetación). Es decir:
+
+Exposición (Tropicalización) ← Confusora (Actividad) → Mediadora (Vegetación) → Outcome (Inundaciones). Esto es porque cuando se encadenan las variables pero Actividad sigue afectando tanto a la de Exposición y al Outcome entonces sigue siendo confusora. 
+
+De esta manera el modelo: NO ajusta por collider (inventando un efecto), corrige/ajusta por confusora (evitando crear un efecto) y no ajusta por mediador evitando subestimar el efecto total.
+
+#Ro: el tema es que aunque actividad sea confusora, tenemos el tema del mediador. Si sacamos lluvias y vegetación no llega por ninguna flecha tropicalización a inundaciones, igual podemos simplemente obviarlos??
+
+Modelo por ahora:
+
+*Inundaciones= β0 ​+ β1 \* Tropicalización + β2​ \* Actividad + β3 \*  + ϵ*
 
 *-------------------------------------------------------------------------------------------------------*
 
