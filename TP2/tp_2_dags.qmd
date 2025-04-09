@@ -43,8 +43,8 @@ Vegetacion -> Inundaciones
 }")
 
 ggdag(cambio_climatico) + theme_dag()+
-  geom_dag_node(color ="blue") + 
-  geom_dag_text(color = "yellow", size=3.5)+
+  geom_dag_node(color ="pink") + 
+  geom_dag_text(color = "black", size=3.5)+
   geom_dag_edges(size = 1.5)
 ```
 
@@ -71,9 +71,9 @@ cambio_climatico %>% ggdag_paths_fan (from = "Tropicalizacion", to= "Inundacione
 
 *En el DAG resaltamos en colores 8 caminos causales abiertos ya que el paquete {ggdag} y {dagitty} no distingue entre caminos causales y no causales, considerando así todos los caminos posibles entre la exposición y el resultado, sean abiertos o cerrados, causales o espurios (caminos despintados). Mirando el gráfico solo 5 de esos 8 caminos quedan como causales abiertos cuando se ajusta por Actividad (ya que los otros 3 se cierran). El primer camino va desde Tropicalización hacia Lluvias y luego Inundaciones. El segundo va desde Tropicalización, a Lluvias, hacia Vegetación, luego a Imperm y finalmente a Inundaciones. El tercer camino va desde Tropicalización, a Lluvias, hacia Vegetación y finalmente hacia Inundaciones. El cuarto camino va desde Tropicalización hacia Vegetación, Imper y luego hacia Inundaciones. El quinto va desde Tropicalización, hacia Vegetación, y finalmente hacia Inundaciones.*
 
-*Los caminos sexto, séptimo y octavo (que aparecen en el primer gráfico de caminos) contienen Actividad la cual actúa como variable confusora. En el caso del sexto camino sale desde Actividad hacia Tropicalización y hacia Imperm que termina en inundaciones. El séptimo va desde Actividad hacia Tropicalización y hacia Vegetación luego Imper llegando a Inundaciones. El octavo comienza en actividad afectando Tropicalización y Vegetación la cual llega a Inundaciones.*
+*Los caminos sexto, séptimo y octavo (que aparecen en el primer gráfico de caminos) contienen la variable "Actividad" que actúa como confusora. En el caso del sexto camino sale desde Actividad hacia Tropicalización y hacia Imperm que termina en inundaciones. El séptimo va desde Actividad hacia Tropicalización y hacia Vegetación luego Imper llegando a Inundaciones. Por último, el octavo comienza en actividad afectando Tropicalización y Vegetación la cual llega a Inundaciones.*
 
-*Obras públicas no pertenece a ningún camino debido a que no abre caminos espurios ni causales entre la exposición y el outcome por lo que no hay que controlarla para estimar el efecto causal entre las variables de interés.*
+*Obras públicas no pertenece a ningún camino debido a que no abre caminos espurios ni causales entre la exposición y el outcome, por lo que no hay que controlarla para estimar el efecto causal entre las variables de interés.*
 
 *-------------------------------------------------------------------------------------------------------*
 
@@ -83,9 +83,9 @@ Ayude a este investigador a navegar su modelo causal y sugierale el mejor modelo
 
 *------------------------------------------------------------------------------------------------------*
 
-Para que el modelo sea causal es necesario identificar y bloquear los caminos de confusión, sin bloquear los caminos causales (mediadores). Actividad debe ser incluida como covariable porque es una confusora: afecta tanto a la exposición (Tropicalización) como a otras variables que a su vez afectan a Inundaciones (como Imperm y Vegetación). Es decir: Exposición (Tropicalización) ← Confusora (Actividad) → Mediadora (Vegetación) → Outcome (Inundaciones). Esto es porque cuando se encadenan las variables pero Actividad sigue afectando tanto a la de Exposición y al Outcome entonces sigue siendo confusora. 
+*Para que el modelo sea causal es necesario identificar y bloquear los caminos de confusión, sin bloquear los caminos causales (mediadores). Actividad debe ser incluida como covariable porque es una confusora: afecta tanto a la exposición (Tropicalización) como a otras variables que a su vez afectan a Inundaciones (como Imperm y Vegetación). Es decir: Exposición (Tropicalización) ← Confusora (Actividad) → Mediadora (Vegetación) → Outcome (Inundaciones). Esto es porque cuando se encadenan las variables pero Actividad sigue afectando tanto a la de Exposición y al Outcome entonces sigue siendo confusora.*
 
-De esta manera el modelo: no ajusta por collider (inventando un efecto), corrige/ajusta por confusora (evitando crear un efecto) y no ajusta por mediador evitando subestimar el efecto total.
+*De esta manera el modelo: no ajusta por collider (inventando un efecto), corrige/ajusta por confusora (evitando crear un efecto) y no ajusta por mediador evitando subestimar el efecto total.*
 
 *Inundaciones= β0 ​+ β1 \* Tropicalización + β2​ \* Actividad + ϵ*
 
@@ -131,7 +131,7 @@ dag <- dagitty("dag {
 
 ggdag(dag) + theme_dag()+
   geom_dag_node(color ="pink") + 
-  geom_dag_text(color = "darkgreen", size=3.5)+
+  geom_dag_text(color = "black", size=3.5)+
   geom_dag_edges(size = 1.5)
 
 ```
@@ -223,7 +223,7 @@ Ahora que tiene los modelos y esta tabla de resultados escriba un texto breve in
 
 *reemplazando –\> p = 0.694/ (1 + 0.694) = 0.4097 aprox.*
 
-*Si la persona es sedentaria, la probabilidad de ser obeso aumenta considerablemente. Por lo que la actividad física puede brindar un efecto Protector.*
+*Si la persona es sedentaria, la probabilidad de ser obeso aumenta considerablemente. Por lo que la actividad física puede brindar un efecto protector.*
 
 ***Modelo 3 (obesidad explicada por el tiempo en pantalla y autoestima)***
 
@@ -259,7 +259,7 @@ En la salida anterior podemos ver junto con los modelos tambien las métricas de
 
 *En el caso del Modelo 2, cuenta con un mejor AIC que el 1, pero no mejora su RMSE y, además, ajusta por una mediadora (actividad física), lo cual no refleja el verdadero efecto del tiempo de pantalla sobre la obesidad.*
 
-En resumen, el mejor modelo es el 1 ya que tiene RMSE igual a los demás, AIC/BIC apenas más alto mientras que no introduce sesgos y nos permite realizar una inferencia causal válida.
+*En resumen, el mejor modelo es el 1 ya que tiene RMSE igual a los demás, AIC/BIC apenas más alto mientras que no introduce sesgos y nos permite realizar una inferencia causal válida.*
 
 *--------------------------------------------------------------------------------------------------------*
 
