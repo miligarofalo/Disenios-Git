@@ -73,9 +73,9 @@ Ayude a este investigador a navegar su modelo causal y sugierale el mejor modelo
 
 *------------------------------------------------------------------------------------------------------*
 
-El modelo no debería controlar por lluvias e Imperm porque son colliders. Luego, con actividad si debemos controlar porque es una variable confusora, es decir, el modelo teórico debería incluir:
+El modelo no debería controlar por Actividad porque es un collider. Luego, con Lluvias y Vegetación si debemos controlar porque es una variable confusora, es decir, el modelo teórico debería incluir:
 
-Inundaciones= β0 ​+ β1 \* Tropicalizacion + β2​ \* Obra_publica + β3 \* Actividad + ϵ
+Inundaciones= β0 ​+ β1 \* Tropicalización + β2​ \* Vegetación + β3 \* Lluvias + ϵ
 
 *-------------------------------------------------------------------------------------------------------*
 
