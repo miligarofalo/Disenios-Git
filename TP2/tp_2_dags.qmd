@@ -260,11 +260,13 @@ En la salida anterior podemos ver junto con los modelos tambien las métricas de
 
 *------------------------------------------------------------------------------------------------------*
 
-*Si nos enfocamos únicamente en las métricas de performance, el mejor modelo sería el 3. Sin embargo, este modelo está sesgado ya que, como se mencionó anteriormente, la variable "autoestima" es un collider que está influenciada por la obesidad, por lo que podría ser una consecuencia más que una causa. Es por esta razón que se descartó dicho modelo como el mejor y se compararon las métricas de los modelos 1 y 2.*
+*Si nos enfocamos únicamente en las métricas de performance (mejor AIC y LogLik que los demás modelos), el mejor modelo sería el 3. Sin embargo, este modelo está sesgado ya que, como se mencionó anteriormente, la variable "autoestima" es un collider que está influenciada por la obesidad, por lo que podría ser una consecuencia más que una causa. Es por esta razón que se descartó dicho modelo como el mejor y se compararon las métricas de los modelos 1 y 2.*
 
-*Luego de un análisis, se obtuvo que el modelo 2 es mejor, ya que incluye la variable de actividad física, que según el DAG tiene una relación directa con la obesidad y sus valores de AIC y log-likelihood son más ajustados.*
+*En el caso del Modelo 2, cuenta con un mejor AIC que el 1, pero no mejora su RMSE y, además, ajusta por una mediadora (actividad física), lo cual no refleja el verdadero efecto del tiempo de pantalla sobre la obesidad.*
 
-*-------------------------------------------------------------------------------------------------------*
+En resumen, el mejor modelo es el 1 ya que tiene RMSE igual a los demás, AIC/BIC apenas más alto mientras que no introduce sesgos y nos permite realizar una inferencia causal válida.
+
+*--------------------------------------------------------------------------------------------------------*
 
 ### 4. Proponiendo nuevas formas de analizar los datos
 
@@ -272,13 +274,17 @@ Hay variables que el investigador no ha incluído en el modelo, ¿ud que piensa?
 
 ```{r}
 # corra su modelo aqui
-Modelo_nuevo <- glm(obesidad ~ tiempo_pantalla + actividad_fisica + nivel_socioeconomico + educacion, 
-                    data = obesidad_pantallas, family = binomial)
+Modelo_nuevo <- glm(obesidad ~ tiempo_pantalla + educacion, data = obesidad_pantallas, family = binomial)
+
 summary(Modelo_nuevo)
+
+modelplot(Modelo_nuevo, coef_omit = "Interc")
 ```
 
 *------------------------------------------------------------------------------------------------------*
 
-*Podríamos mejorar el análisis incorporando al nivel socioeconómico y a la educación, ya que según el DAG influyen en el tiempo frente a pantallas, la actividad física y la obesidad. Este modelo es más completo porque incluye las variables que influyen directa e indirectamente en la obesidad según el DAG. Al controlar por educación y nivel socioeconómico, podemos ver con mayor claridad el efecto real del tiempo frente a pantallas, sin que esté confundido por otras variables.*
+*Podríamos mejorar el análisis incorporando educación, ya que según el DAG es una variable confusora entre el tiempo en pantalla y la obesidad.*
+
+*Este modelo es más completo porque no ajusta por Actividad Física (que es un mediador) ni por autoestima (que es un collider) mientras que bloquea el backdoor generado a partir del nivel socioecónomico la educación y el tiempo en pantalla. Al controlar por educación, podemos ver con mayor claridad el efecto real del tiempo frente a pantallas, sin que esté confundido por otras variables. Además, cuenta con un mejor AIC que el modelo 1.*
 
 *-------------------------------------------------------------------------------------------------------*
