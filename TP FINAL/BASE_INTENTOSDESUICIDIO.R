@@ -1,13 +1,12 @@
-library(readr)
-ENSSyR_Mujeres_BaseUsuario <- read_delim("C:/Users/Mili/Downloads/ENSSyR_Mujeres_BaseUsuario.txt", 
-  delim = "|",
-  quote = "\"",
-  escape_double = FALSE,
-  trim_ws = TRUE,
+#library(readr)
+#ENSSyR_Mujeres_BaseUsuario <- read_delim("C:/Users/Mili/Downloads/ENSSyR_Mujeres_BaseUsuario.txt", 
+#  delim = "|",
+#  quote = "\"",
+#  escape_double = FALSE,
+#  trim_ws = TRUE,
   #na = c("", "NA", "9999")               # Ajusta si hay otros códigos de NA
 )
-View(ENSSyR_Mujeres_BaseUsuario)
-
+# Explicacion del codigo de arriba: 
 #Tipo de archivo: texto plano.
 #Delimitador: “|” (pipe, barra vertical, ASCII 124).
 #Calificador de texto: comilla doble (ASCII 34).
@@ -18,6 +17,9 @@ View(ENSSyR_Mujeres_BaseUsuario)
 
 
 
+library(rstudioapi)
 library(readr)
-National <- read_csv("C:/Users/Mili/Downloads/National.csv")
-View(National)
+setwd(dirname(getActiveDocumentContext()$path))
+getwd()
+data <- read_csv("National.csv")
+
