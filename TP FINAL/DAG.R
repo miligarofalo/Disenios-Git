@@ -49,38 +49,9 @@ causal <- dagitty("dag {
 
 
 
-ggdag(causal, layout = "circle")
+ggdag(causal) + theme_dag()+
+  geom_dag_node(color ="pink") + 
+  geom_dag_text(color = "black", size=3.5)+
+  geom_dag_edges(size = 1.5)
 
-
-ggdag_paths(causal) # CAMINOS QUE ESTAN ABIERTOS. FIJATE Q DICE CORREGIR POR EDUCACION
-# Corrigiendo educacion corregis un camino.
-
-ggdag(causal, layout = "nicely") + 
-  theme_dag() +
-  ggtitle("DAG ordenado automáticamente")
-
-
-ggdag(causal, layout = "stress") + 
-  theme_dag() +
-  ggtitle("DAG con layout Stress") +
-  theme(legend.position = "none")
-
-
-ggdag(causal, layout = "manual") + 
-  theme_dag() +
-  ggtitle("DAG mejorado con posiciones manuales") +
-  theme(legend.position = "none", 
-        text = element_text(size = 12),  # Tamaño de texto
-        plot.title = element_text(size = 14, face = "bold"))  # Título más grande
-
-
-
-ggdag(causal, layout = "stress") + 
-  theme_dag() +
-  ggtitle("DAG con Layout Stress y Caminos Abiertos") +
-  theme(legend.position = "none", 
-        text = element_text(size = 12), 
-        plot.title = element_text(size = 14, face = "bold")) +
-  geom_dag_text(aes(label = name), size = 4, color = "darkred") +  # Texto más grande y de color
-  geom_dag_point(aes(color = name), size = 5) +  # Nodos con color más intenso
-  ggdag_paths(causal, shadow = TRUE)  # Muestra los caminos abiertos
+causal %>% ggdag_paths_fan (shadow = TRUE, node_size = 18, text_size = 4, spread = 1.5, label_size = text_size, node= TRUE, text_col = "white")
